@@ -7,12 +7,9 @@ class EntityComparator {
     def compareEntity(def expected, def actual) {
         assertFieldMap(expected,actual)
         comparedObjects.add(actual)
-        actual.getClass().getDeclaredFields().each { actualField ->
-            Field expectedField = expected.getClass().getDeclaredField(actualField.getName())
-
-            actualField.setAccessible(true)
-            expectedField.setAccessible(true)
-
+        expected.getClass().getDeclaredFields().each { expectedField ->
+            Field actualField = actual.getClass().getDeclaredField(expectedField.getName())
+            EntityOps.overrideAccess(actualField,expectedField)
 
             if(expectedField.get(expected) == null) {
                 assert actualField.get(actual) == null
@@ -30,21 +27,12 @@ class EntityComparator {
                 default:
                     if(!comparedObjects.contains(actualField.get(actual)))
                         compareEntity(expectedField.get(expected),actualField.get(actual))
-                    break;
             }
         }
     }
 
-    def assertFieldMap(def expected, def actual){
-        assert fieldMap(expected) == fieldMap(actual)
+    private def assertFieldMap(def expected, def actual){
+        assert EntityOps.fieldMap(expected) == EntityOps.fieldMap(actual)
     }
 
-    Map<String,String> fieldMap(def clazz){
-        Map<String,String> map = new  HashMap<String,String>()
-        clazz.getClass().getDeclaredFields().each {
-            it.setAccessible(true)
-            map.put(it.get(clazz).getClass().toString(),it.getName())
-        }
-        map
-    }
 }

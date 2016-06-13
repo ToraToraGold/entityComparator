@@ -18,10 +18,10 @@ public class UserThree {
 //        this.hhh = 13;
     }
 
-    String conc(){
-        return fname+lname;
-    }
-    void showAge(){
-        System.out.println(age);
-    }
+//    String conc(){
+//        return fname+lname;
+//    }
+//    void showAge(){
+//        System.out.println(age);
+//    }
 }
