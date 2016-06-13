@@ -28,7 +28,8 @@ def compare(def a, def b) {
                     assert f.get(a) == g.get(b)
                 }
                 else{
-                    compare(f.get(a),g.get(b))
+                    if(f.get(a) == null) assert g.get(b) == null
+                    else compare(f.get(a),g.get(b))
                 }
             }
         }
